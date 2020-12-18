@@ -1,0 +1,77 @@
+{
+  "name": "tag-server",
+  "version": "0.0.1",
+  "description": "tag backend",
+  "main": "main/app.ts",
+  "scripts": {
+    "start": "npm run build:live",
+    "build": "tsc -p .",
+    "build:live": "nodemon --watch 'src/**/*.ts' --exec \"ts-node\" src/main/app.ts",
+    "test": "jest --detectOpenHandles --maxWorkers=1",
+    "test:watch": "npm run test -- --watchAll --coverage"
+  },
+  "keywords": [
+    "typescript",
+    "nodejs",
+    "mongoose",
+    "mongodb",
+    "express"
+  ],
+  "author": "qtran1997",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-typescript": "^7.12.7",
+    "@types/eslint": "^7.2.6",
+    "@types/express": "^4.17.9",
+    "@types/jest": "^26.0.19",
+    "@types/module-alias": "^2.0.0",
+    "@types/mongoose": "^5.10.3",
+    "@types/node": "^14.14.14",
+    "@types/supertest": "^2.0.10",
+    "babel-cli": "^6.26.0",
+    "babel-jest": "^26.6.3",
+    "eslint": "^7.15.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "jest": "^26.6.3",
+    "jest-circus": "^26.6.3",
+    "jest-resolve": "^26.6.2",
+    "jest-watch-typeahead": "^0.6.1",
+    "nodemon": "^2.0.6",
+    "superagent": "^6.1.0",
+    "supertest": "^6.0.1",
+    "ts-jest": "^26.4.4",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "module-alias": "^2.2.2",
+    "mongoose": "^5.11.8"
+  },
+  "eslintConfig": {
+    "extends": [
+      "airbnb"
+    ]
+  },
+  "_moduleAliases": {
+    "tag-server-test": "src/test",
+    "tag-server": "src/main"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "useBuiltIns": "entry"
+        },
+        {
+          "targets": {"node":"current"}
+        }
+      ],
+      "@babel/preset-typescript"
+    ]
+  }
+}
