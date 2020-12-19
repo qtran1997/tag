@@ -81,12 +81,6 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --coverage"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -101,9 +95,6 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.6",
-    "@typescript-eslint/eslint-plugin": "^4.9.1",
-    "@typescript-eslint/parser": "^4.9.1",
-    "eslint": "^7.15.0",
     "msw": "^0.24.2",
     "react-app-rewired": "^2.1.7"
   },
@@ -111,6 +102,7 @@
     "roots": [
       "<rootDir>/src"
     ],
+    "collectCoverage": true,
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
       "!src/**/*.d.ts"
@@ -126,7 +118,7 @@
       "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
     ],
     "testEnvironment": "jsdom",
-    "testRunner": "C:\\Users\\User\\Documents\\Projects\\tag\\node_modules\\jest-circus\\runner.js",
+    "testRunner": "<rootDir>/node_modules/jest-circus/runner.js",
     "transform": {
       "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
@@ -160,8 +152,8 @@
       "jest-watch-typeahead/testname"
     ],
     "resetMocks": true,
-    "modulePathIgnorePatterns" : [
-      "<rootDir>/src/index.tsx" ,
+    "modulePathIgnorePatterns": [
+      "<rootDir>/src/index.tsx",
       "<rootDir>/src/reportWebVitals.ts"
     ]
   },

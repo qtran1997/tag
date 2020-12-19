@@ -4,7 +4,8 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "esnext",
+      "ES6"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -24,6 +25,9 @@
       "tag-client/*": ["src/main/*"],
       "tag-client-test/*": ["src/test/*"]
     },
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true
   },
   "include": [
     "src"
