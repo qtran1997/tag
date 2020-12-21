@@ -5,13 +5,15 @@ import mongoose from "mongoose";
 import { UsersApi } from "tag-server/routes";
 import { dbKey } from "tag-server/config/keys";
 
+if (process.env.NODE_ENV !== "test") {
 const db = dbKey.mongoURI;
 
-// Connect to MongoDB
-mongoose
-  .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log(err));
+  // Connect to MongoDB
+  mongoose
+    .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log("MongoDB Connected"))
+    .catch((err) => console.log(err));
+}
 
 export enum ServerRoutes {
   USERS = "/api/users",
@@ -32,8 +34,9 @@ else port = 5000;
 
 serverapp.use(ServerRoutes.USERS, UsersApi);
 
-const server = serverapp.listen(port, (): void =>
-  console.log(`Server running on port ${port}`)
-);
+const server = serverapp.listen(port, (): void => {
+  if (process.env.NODE_ENV !== "test")
+    console.log(`Server running on port ${port}`);
+});
 
 export default server;
