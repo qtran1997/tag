@@ -1,5 +1,6 @@
 import express, { Router } from "express";
-import { UserRoutes } from "../constants";
+import { validateUsernameRegistration } from "tag-server/validation/routes/user/register";
+import { StatusCodes, UserRoutes } from "../constants";
 
 const router: Router = express.Router();
 
@@ -13,5 +14,19 @@ router.get(UserRoutes.TEST, (_req, res) =>
     msg: "Users API Works",
   })
 );
+
+/**
+ * @operation   POST
+ * @route       api/users/register
+ * @description User registration route
+ */
+router.post(UserRoutes.REGISTER, (req, res) => {
+  const { errors, isValid } = validateUsernameRegistration(req.body);
+
+  // Check Validation
+  if (!isValid) {
+    return res.status(StatusCodes.BAD_REQUEST).json(errors);
+  }
+});
 
 export default router;
