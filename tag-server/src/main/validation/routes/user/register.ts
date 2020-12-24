@@ -1,29 +1,31 @@
 import { isEmpty } from "tag-server/util";
-import { isValid, validateEmail, validatePassword, validateUsername } from "../../util";
-import ValidationReturnType from "../../constants/ValidationReturnType";
+import {
+  isValid,
+  validateEmail,
+  validatePassword,
+  validateUsername,
+} from "../../util";
+import { ValidationReturnType } from "tag-server/common/types";
 
-interface UsernameRegReturnType extends ValidationReturnType {
-  errors: {
-    email: string | null;
-    username: string | null;
-    password: string | null;
-  };
+// Route - User: Registration Validation
+export type UsernameRegValidationProps = {
+  email?: string;
+  username?: string;
+  password?: string;
 }
 
-interface UsernameErrorMap {
-  email: string | null;
-  username: string | null;
-  password: string | null;
+export type UsernameErrorMap = {
+  email?: string;
+  username?: string;
+  password?: string;
 }
 
-interface UsernameValidationProps {
-  email: string | undefined | null;
-  username: string | undefined | null;
-  password: string | undefined | null;
+export interface UsernameRegReturnType extends ValidationReturnType {
+  errors: UsernameErrorMap;
 }
 
-type UsernameValidationFunc = (
-  props: UsernameValidationProps
+export type UsernameValidationFunc = (
+  props: UsernameRegValidationProps
 ) => UsernameRegReturnType;
 
 /**
@@ -35,11 +37,7 @@ export const validateUsernameRegistration: UsernameValidationFunc = ({
   username,
   password,
 }) => {
-  const errors: UsernameErrorMap = {
-    email: null,
-    username: null,
-    password: null,
-  };
+  const errors: UsernameErrorMap = {};
 
   const testEmail = !isEmpty(email) ? <string>email : "";
   const testUsername = !isEmpty(username) ? <string>username : "";
