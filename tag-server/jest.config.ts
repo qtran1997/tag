@@ -27,6 +27,7 @@ export default {
     "!src/main/app.ts",
     "!src/main/common/types.ts",
     "!src/main/config/passport.ts",
+    "!src/test/test-util/*"
   ],
   // The directory where Jest should output its coverage files
   coverageDirectory: "coverage",
