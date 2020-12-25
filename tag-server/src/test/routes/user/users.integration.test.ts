@@ -1,16 +1,29 @@
 import request from "supertest";
 import Server, { ServerRoutes } from "tag-server/app";
+import hashString from "tag-server/config/hashString";
 import { User } from "tag-server/models";
 import { StatusCodes, UserRoutes } from "tag-server/routes/constants";
-
-import { validateUsernameRegistration } from "tag-server/validation/routes/user/register";
 import dbHandler from "tag-server-test/test-util/db-handler";
 
-jest.mock("tag-server/validation/routes/user/register");
-
 describe("Users Route", () => {
-  beforeAll(async () => await dbHandler.connect());
-  afterEach(async () => await dbHandler.clearDatabase());
+  const existingUser = {
+    email: "existing@email.com",
+    username: "testUsername",
+    password: "123456",
+  };
+
+  beforeAll(async () => {
+    await dbHandler.connect();
+
+    // Add a mock user to the database
+    const newUser = new User({
+      ...existingUser,
+      password: await hashString(existingUser.password),
+    });
+
+    await newUser.save();
+  });
+  // afterEach(async () => await dbHandler.clearDatabase());
   afterAll(async () => {
     await dbHandler.closeDatabase();
     Server.close();
@@ -27,86 +40,146 @@ describe("Users Route", () => {
   });
 
   describe("/api/users/register", () => {
-    const validateUsernameRegistrationMock = validateUsernameRegistration as jest.MockedFunction<
-      typeof validateUsernameRegistration
-    >;
-
     // TODO: Trigger the error catch
 
     it("should return a 400 status code because there are errors in the form inputs", async (done) => {
-      // Mock validation data instead of sending as body to speed up the process
-      validateUsernameRegistrationMock.mockReturnValueOnce({
-        errors: {
-          email: "error!",
-          username: "error!",
-          password: "error!",
-        },
-        isValid: false,
-      });
-
       const res = await request(Server).post(
         ServerRoutes.USERS + UserRoutes.REGISTER
       );
 
-      expect(res.status).toEqual(StatusCodes.BAD_REQUEST);
+      expect(res.status).toEqual(StatusCodes.OK);
       done();
     });
 
     it("should return error messages if the email is already registered", async (done) => {
-      validateUsernameRegistrationMock.mockReturnValueOnce({
-        errors: {},
-        isValid: true,
-      });
-
       const cannedRequestBody = {
-        email: "test@email.com",
-        username: "testUsername",
-        password: "1234",
+        email: existingUser.email,
+        username: "unusedUsername",
+        password: existingUser.password,
       };
-
-      // Add a mock user to the database
-      const newUser = new User({
-        ...cannedRequestBody,
-        username: "username",
-      });
-      newUser.save();
 
       const res = await request(Server)
         .post(ServerRoutes.USERS + UserRoutes.REGISTER)
         .send(cannedRequestBody);
 
+      const registeredUserByEmail = await User.findOne({
+        email: cannedRequestBody.email,
+      });
+
+      expect(registeredUserByEmail).not.toBeNull();
+
       expect(res.status).toEqual(StatusCodes.OK);
-      expect(res.body.email).not.toEqual(undefined);
-      expect(res.body.username).toEqual(undefined);
+      expect(res.body.email).not.toEqual("");
+      expect(res.body.username).toEqual("");
       done();
     });
 
     it("should return error messages if the username is already registered", async (done) => {
-      validateUsernameRegistrationMock.mockReturnValueOnce({
-        errors: {},
-        isValid: true,
-      });
-
       const cannedRequestBody = {
-        email: "new@email.com",
-        username: "testUsername",
-        password: "1234",
+        email: "unusedEmail@email.com",
+        username: existingUser.username,
+        password: existingUser.password,
       };
-
-      // Add a mock user to the database
-      const newUser = new User({
-        ...cannedRequestBody,
-        email: "existing@email.com",
-      });
-      newUser.save();
 
       const res = await request(Server)
         .post(ServerRoutes.USERS + UserRoutes.REGISTER)
         .send(cannedRequestBody);
 
       expect(res.status).toEqual(StatusCodes.OK);
-      expect(res.body.username).not.toEqual(undefined);
-      expect(res.body.email).toEqual(undefined);
+      expect(res.body.username).not.toEqual("");
+      expect(res.body.email).toEqual("");
+      done();
+    });
+
+    it("should not return any errors and successfully register the user", async (done) => {
+      const cannedRequestBody = {
+        email: "new@email.com",
+        username: "newUsername",
+        password: existingUser.password,
+      };
+
+      const res = await request(Server)
+        .post(ServerRoutes.USERS + UserRoutes.REGISTER)
+        .send(cannedRequestBody);
+
+      expect(res.status).toEqual(StatusCodes.OK);
+      expect(res.body.username).toEqual(cannedRequestBody.username);
+      expect(res.body.email).toEqual(cannedRequestBody.email);
+
+      const registeredUserByEmail = await User.findOne({
+        email: cannedRequestBody.email,
+      });
+      const registeredUserByUsername = await User.findOne({
+        username: cannedRequestBody.username,
+      });
+
+      expect(registeredUserByEmail).not.toBeNull();
+      expect(registeredUserByUsername).not.toBeNull();
+      done();
+    });
+  });
+
+  describe("/api/users/login", () => {
+    // TODO: Trigger the error catch
+    it("should return a 400 status code because there are errors in the form inputs", async (done) => {
+      const res = await request(Server).post(
+        ServerRoutes.USERS + UserRoutes.LOGIN
+      );
+      expect(res.status).toEqual(StatusCodes.OK);
+      done();
+    });
+
+    it("should return an error message if the user is not found", async (done) => {
+      const cannedRequestBody = {
+        username: "wrongUsername",
+        password: existingUser.password,
+      };
+
+      const res = await request(Server)
+        .post(ServerRoutes.USERS + UserRoutes.LOGIN)
+        .send(cannedRequestBody);
+
+      expect(res.status).toEqual(StatusCodes.OK);
+      expect(res.body.username).not.toEqual("");
+      expect(res.body.password).toEqual("");
+      done();
+    });
+
+    it("should return an error message if the password is incorrect", async (done) => {
+      const cannedRequestBody = {
+        username: existingUser.username,
+        password: "wrongpassword",
+      };
+
+      const res = await request(Server)
+        .post(ServerRoutes.USERS + UserRoutes.LOGIN)
+        .send(cannedRequestBody);
+
+      expect(res.status).toEqual(StatusCodes.OK);
+      expect(res.body.username).toEqual("");
+      expect(res.body.password).not.toEqual("");
+      done();
+    });
+
+    it("should return a success message and information about the user if all inputs are correct", async (done) => {
+      const cannedRequestBody = {
+        username: existingUser.username,
+        password: existingUser.password,
+      };
+
+      const res = await request(Server)
+        .post(ServerRoutes.USERS + UserRoutes.LOGIN)
+        .send(cannedRequestBody);
+
+      const registeredUserByUsername = await User.findOne({
+        username: existingUser.username,
+      });
+
+      expect(res.status).toEqual(StatusCodes.OK);
+      expect(res.body.username).toEqual(undefined);
+      expect(res.body.password).toEqual(undefined);
+      expect(res.body).toHaveProperty("success");
+      expect(res.body.success).toEqual(true);
       done();
     });
   });
