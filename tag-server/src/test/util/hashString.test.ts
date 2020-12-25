@@ -1,4 +1,4 @@
-import { hashString } from "tag-server/util";
+import hashString from "tag-server/config/hashString";
 
 describe("hashString()", () => {
   // TODO: Investigate test how to trigger an error
