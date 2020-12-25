@@ -1,6 +1,6 @@
 import validatePassword, {
   PasswordErrorMessages,
-} from "tag-server/validation/util/validatePassword";
+} from "tag-server/validation/routes/user/register/util/validateRegPassword";
 
 describe("validatePassword()", () => {
   it("should return the required error message ", () => {

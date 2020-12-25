@@ -1,6 +1,6 @@
 import validateEmail, {
   EmailErrorMessages,
-} from "tag-server/validation/util/validateEmail";
+} from "tag-server/validation/routes/user/register/util/validateRegEmail";
 
 describe("validateEmail()", () => {
   it("should return the required error message ", () => {

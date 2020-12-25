@@ -1,6 +1,6 @@
 import validateUsername, {
   UsernameErrorMessages,
-} from "tag-server/validation/util/validateUsername";
+} from "tag-server/validation/routes/user/register/util/validateRegUsername";
 
 describe("validateUsername()", () => {
   it("should return the required error message ", () => {
