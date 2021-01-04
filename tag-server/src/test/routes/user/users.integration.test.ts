@@ -1,7 +1,7 @@
 import request from "supertest";
 import Server, { ServerRoutes } from "tag-server/app";
 import hashString from "tag-server/config/hashString";
-import { User } from "tag-server/models";
+import { User, UserLinks } from "tag-server/models";
 import { StatusCodes, UserRoutes } from "tag-server/routes/constants";
 import dbHandler from "tag-server-test/test-util/db-handler";
 
@@ -12,6 +12,16 @@ describe("Users Route", () => {
     password: "123456",
   };
 
+  const user2 = {
+    email: "user2@email.com",
+    username: "username2",
+    password: "123456",
+  };
+
+  const existingUserLinks = {
+    facebook: "existingfacebook.com",
+  };
+
   beforeAll(async () => {
     await dbHandler.connect();
 
@@ -20,8 +30,20 @@ describe("Users Route", () => {
       ...existingUser,
       password: await hashString(existingUser.password),
     });
+    const newUser2 = new User({
+      ...user2,
+      password: await hashString(existingUser.password),
+    });
 
-    await newUser.save();
+    const savedUser = await newUser.save();
+    const savedUser2 = await newUser2.save();
+
+    const newUserLinks = new UserLinks({
+      ...existingUserLinks,
+      user_id: savedUser._id,
+    });
+
+    const savedUserLink = await newUserLinks.save();
   });
   // afterEach(async () => await dbHandler.clearDatabase());
   afterAll(async () => {
@@ -42,7 +64,7 @@ describe("Users Route", () => {
   describe("/api/users/register", () => {
     // TODO: Trigger the error catch
 
-    it("should return a 400 status code because there are errors in the form inputs", async (done) => {
+    it("should return a 200 status code because there are errors in the form inputs", async (done) => {
       const res = await request(Server).post(
         ServerRoutes.USERS + UserRoutes.REGISTER
       );
@@ -119,6 +141,91 @@ describe("Users Route", () => {
     });
   });
 
+  describe("/api/users/register/links", () => {
+    // TODO: Trigger the error catch
+
+    it("should return an error if the user is not logged in", async (done) => {
+      const cannedRequestBody = {};
+
+      const res = await request(Server)
+        .post(ServerRoutes.USERS + UserRoutes.REGISTER_LINKS)
+        .send(cannedRequestBody);
+
+      expect(res.status).toEqual(StatusCodes.UNAUTHORIZED);
+      done();
+    });
+
+    it("should return a new UserLink if the the user links have not been registered yet", async (done) => {
+      const cannedRequestBody = {
+        facebook: "facebook.com/test",
+      };
+
+      const loggedInServer = request.agent(Server);
+
+      const loginRes = await loggedInServer
+        .post(ServerRoutes.USERS + UserRoutes.LOGIN)
+        .send(user2);
+      const authToken = loginRes.body.token;
+
+      const res = await loggedInServer
+        .post(ServerRoutes.USERS + UserRoutes.REGISTER_LINKS)
+        .auth(authToken, { type: "bearer" })
+        .send(cannedRequestBody);
+
+      expect(res.status).toEqual(StatusCodes.OK);
+
+      expect(res.body.facebook).toEqual(cannedRequestBody.facebook);
+
+      const registeredUserByEmail = await User.findOne({
+        email: user2.email,
+      });
+
+      const userId = registeredUserByEmail?.id;
+
+      const userLinks = await UserLinks.findOne({ user_id: userId });
+
+      expect(userLinks).not.toBeNull();
+      expect(userLinks?.facebook).toEqual(cannedRequestBody.facebook);
+      done();
+    });
+
+    it("should return a success message when successfully updating an existing user link", async (done) => {
+      const cannedRequestBody = {
+        facebook: "facebook.com/test",
+      };
+
+      const registeredUserByEmail = await User.findOne({
+        email: existingUser.email,
+      });
+
+      const userId = registeredUserByEmail?.id;
+
+      const userLinksInitial = await UserLinks.findOne({ user_id: userId });
+
+      expect(userLinksInitial).not.toBeNull();
+
+      const loggedInServer = request.agent(Server);
+
+      const loginRes = await loggedInServer
+        .post(ServerRoutes.USERS + UserRoutes.LOGIN)
+        .send(existingUser);
+      const authToken = loginRes.body.token;
+
+      const res = await loggedInServer
+        .post(ServerRoutes.USERS + UserRoutes.REGISTER_LINKS)
+        .auth(authToken, { type: "bearer" })
+        .send(cannedRequestBody);
+
+      expect(res.status).toEqual(StatusCodes.OK);
+
+      const userLinksAfter = await UserLinks.findOne({ user_id: userId });
+
+      expect(userLinksAfter).not.toBeNull();
+      expect(userLinksAfter?.facebook).toEqual(cannedRequestBody.facebook);
+      done();
+    });
+  });
+
   describe("/api/users/login", () => {
     // TODO: Trigger the error catch
     it("should return a 400 status code because there are errors in the form inputs", async (done) => {
@@ -170,10 +277,6 @@ describe("Users Route", () => {
       const res = await request(Server)
         .post(ServerRoutes.USERS + UserRoutes.LOGIN)
         .send(cannedRequestBody);
-
-      const registeredUserByUsername = await User.findOne({
-        username: existingUser.username,
-      });
 
       expect(res.status).toEqual(StatusCodes.OK);
       expect(res.body.username).toEqual(undefined);

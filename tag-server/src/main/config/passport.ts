@@ -5,7 +5,7 @@ import { dbKey } from "./keys";
 const JwtStrategy = PassportJWT.Strategy;
 const ExtractJwt = PassportJWT.ExtractJwt;
 
-import User from "../models/User";
+import { User } from "../models";
 
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

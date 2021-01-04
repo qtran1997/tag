@@ -1,7 +1,7 @@
 import { UserRegistrationValidation } from "tag-server/validation";
 
 describe("UserRegistrationValidation", () => {
-  describe("validateUsernameRegistration", () => {
+  describe("validateUsernameRegistration()", () => {
     const { validateUsernameRegistration } = UserRegistrationValidation;
 
     it("should return a map with no errors and isValid is true", () => {

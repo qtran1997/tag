@@ -9,14 +9,14 @@ export type UsernameRegValidationProps = {
   password?: string;
 };
 
-export type UsernameErrorMap = {
+export type UsernameRegErrorMap = {
   email: string;
   username: string;
   password: string;
 };
 
 export interface UsernameRegReturnType extends ValidationReturnType {
-  errors: UsernameErrorMap;
+  errors: UsernameRegErrorMap;
 }
 
 export type UsernameValidationFunc = (
@@ -40,7 +40,7 @@ export const validateUsernameRegistration: UsernameValidationFunc = ({
   const testUsername = !isEmpty(username) ? <string>username : "";
   const testPassword = !isEmpty(password) ? <string>password : "";
 
-  const errors: UsernameErrorMap = {
+  const errors: UsernameRegErrorMap = {
     email: validateEmail(testEmail),
     password: validatePassword(testPassword),
     username: validateUsername(testUsername),
