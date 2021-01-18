@@ -17,6 +17,9 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
+    userLinks: {
+      type: mongoose.Schema.Types.ObjectId,
+    },
     friends: [{ type: Schema.Types.ObjectId, ref: "friends" }],
   },
   { timestamps: true }

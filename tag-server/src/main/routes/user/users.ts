@@ -129,9 +129,7 @@ router.post(
             youtube: youtube ? youtube.trim() : userLinks.youtube,
           });
 
-          return res.status(StatusCodes.OK).json({
-            success: true,
-          });
+          savedUserLinks = userLinks;
         } else {
           const newUserLinks = new UserLinks({
             user_id: user._id,
@@ -145,9 +143,16 @@ router.post(
           });
 
           savedUserLinks = await newUserLinks.save();
-
-          return res.status(StatusCodes.OK).json(savedUserLinks);
         }
+
+        // Add the user link document to the user
+        const userToSave = await User.findById(user._id);
+        if (!userToSave) throw new Error();
+        
+        userToSave.userLinks = savedUserLinks._id;
+        await userToSave.save();
+
+        return res.status(StatusCodes.OK).json(savedUserLinks);
       }
 
       throw new Error();

@@ -187,6 +187,7 @@ describe("Users Route", () => {
 
       expect(userLinks).not.toBeNull();
       expect(userLinks?.facebook).toEqual(cannedRequestBody.facebook);
+      expect(registeredUserByEmail?.userLinks).toEqual(userLinks?._id);
       done();
     });
 
@@ -195,7 +196,7 @@ describe("Users Route", () => {
         facebook: "facebook.com/test",
       };
 
-      const registeredUserByEmail = await User.findOne({
+      let registeredUserByEmail = await User.findOne({
         email: existingUser.email,
       });
 
@@ -221,8 +222,13 @@ describe("Users Route", () => {
 
       const userLinksAfter = await UserLinks.findOne({ user_id: userId });
 
+      registeredUserByEmail = await User.findOne({
+        email: existingUser.email,
+      });
+
       expect(userLinksAfter).not.toBeNull();
       expect(userLinksAfter?.facebook).toEqual(cannedRequestBody.facebook);
+      expect(registeredUserByEmail?.userLinks).toEqual(userLinksAfter?._id);
       done();
     });
   });
