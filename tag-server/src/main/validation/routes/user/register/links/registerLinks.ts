@@ -1,4 +1,4 @@
-import { isEmpty } from "tag-server/util";
+import { isEmpty } from "tag-server/common/util";
 import { isValid } from "tag-server/validation/util";
 import { ValidationReturnType } from "tag-server/common/types";
 import {

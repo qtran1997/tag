@@ -1,8 +1,9 @@
 import request from "supertest";
-import Server, { ServerRoutes } from "tag-server/app";
+import Server from "tag-server/app";
+import { ServerRoutes, StatusCodes } from "tag-server/common/constants";
 import hashString from "tag-server/config/hashString";
 import { User, UserLinks } from "tag-server/models";
-import { StatusCodes, UserRoutes } from "tag-server/routes/constants";
+import { UserRoutes } from "tag-server/routes/constants";
 import dbHandler from "tag-server-test/test-util/db-handler";
 
 describe("Users Route", () => {
@@ -51,7 +52,7 @@ describe("Users Route", () => {
     Server.close();
   });
 
-  describe("/api/users/test", () => {
+  describe(ServerRoutes.USERS + UserRoutes.TEST, () => {
     it("should return a 200 status code", async (done) => {
       const res = await request(Server).get(
         ServerRoutes.USERS + UserRoutes.TEST
@@ -61,7 +62,7 @@ describe("Users Route", () => {
     });
   });
 
-  describe("/api/users/register", () => {
+  describe(ServerRoutes.USERS + UserRoutes.REGISTER, () => {
     // TODO: Trigger the error catch
 
     it("should return a 200 status code because there are errors in the form inputs", async (done) => {
@@ -141,7 +142,7 @@ describe("Users Route", () => {
     });
   });
 
-  describe("/api/users/register/links", () => {
+  describe(ServerRoutes.USERS + UserRoutes.REGISTER_LINKS, () => {
     // TODO: Trigger the error catch
 
     it("should return an error if the user is not logged in", async (done) => {
@@ -180,7 +181,7 @@ describe("Users Route", () => {
         email: user2.email,
       });
 
-      const userId = registeredUserByEmail?.id;
+      const userId = registeredUserByEmail?._id;
 
       const userLinks = await UserLinks.findOne({ user_id: userId });
 
@@ -198,7 +199,7 @@ describe("Users Route", () => {
         email: existingUser.email,
       });
 
-      const userId = registeredUserByEmail?.id;
+      const userId = registeredUserByEmail?._id;
 
       const userLinksInitial = await UserLinks.findOne({ user_id: userId });
 
@@ -226,7 +227,7 @@ describe("Users Route", () => {
     });
   });
 
-  describe("/api/users/login", () => {
+  describe(ServerRoutes.USERS + UserRoutes.LOGIN, () => {
     // TODO: Trigger the error catch
     it("should return a 400 status code because there are errors in the form inputs", async (done) => {
       const res = await request(Server).post(

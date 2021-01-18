@@ -1,4 +1,4 @@
-import { isEmpty } from "tag-server/util";
+import { isEmpty } from "tag-server/common/util";
 
 describe("isEmpty()", () => {
   describe("type object", () => {

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
+import mongooseOptions from 'tag-server/config/mongooseOptions';
 
 const mongod = new MongoMemoryServer();
 
@@ -9,12 +10,7 @@ const mongod = new MongoMemoryServer();
 const connect = async () => {
   const uri = await mongod.getUri();
 
-  const mongooseOpts = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  };
-
-  await mongoose.connect(uri, mongooseOpts);
+  await mongoose.connect(uri, mongooseOptions);
 };
 
 /**

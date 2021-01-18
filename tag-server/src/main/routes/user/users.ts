@@ -4,12 +4,13 @@ import jsonwebtoken from "jsonwebtoken";
 import { dbKey } from "../../config/keys";
 import passport from "passport";
 
+import { StatusCodes } from "tag-server/common/constants";
 import hashString from "tag-server/config/hashString";
 import { User, UserLinks } from "tag-server/models";
 import { validateUsernameRegistration } from "tag-server/validation/routes/user/register/register";
 import { validateUserLinksRegistration } from "tag-server/validation/routes/user/register/links/registerLinks";
 import { validateLoginInput } from "tag-server/validation/routes/user/login/login";
-import { StatusCodes, UserRoutes } from "../constants";
+import { UserRoutes } from "../constants";
 
 const router: Router = express.Router();
 
@@ -126,11 +127,11 @@ router.post(
             portfolio: portfolio ? portfolio.trim() : userLinks.portfolio,
             twitter: twitter ? twitter.trim() : userLinks.twitter,
             youtube: youtube ? youtube.trim() : userLinks.youtube,
-          })
+          });
 
           return res.status(StatusCodes.OK).json({
-            success: true
-          })
+            success: true,
+          });
         } else {
           const newUserLinks = new UserLinks({
             user_id: user._id,
