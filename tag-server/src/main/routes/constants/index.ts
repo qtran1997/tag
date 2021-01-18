@@ -1,3 +1,3 @@
-export { default as StatusCodes } from "./StatusCodes";
+export { default as FriendRoutes } from "./FriendRoutes";
 export { default as UserRoutes } from "./UserRoutes";
 
