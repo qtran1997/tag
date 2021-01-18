@@ -4,24 +4,19 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import passport from "passport";
 
+import ServerRoutes from 'tag-server/common/constants/ServerRoutes';
 import { dbKey } from "tag-server/config/keys";
+import mongooseOptions from 'tag-server/config/mongooseOptions';
 import passportCheck from "tag-server/config/passport";
 
-import { UsersApi } from "tag-server/routes";
-
-export enum ServerRoutes {
-  USERS = "/api/users",
-}
+import { FriendsApi, UsersApi } from "tag-server/routes";
 
 if (process.env.NODE_ENV !== "test") {
   const db = dbKey.mongoURI;
 
   // Connect to MongoDB
   mongoose
-    .connect(db, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
+    .connect(db, mongooseOptions)
     .then(() => console.log("MongoDB Connected"))
     .catch((err) => console.log(err));
 }
@@ -48,6 +43,7 @@ else if (process.env.NODE_ENV === "test")
 else port = 5000;
 
 serverapp.use(ServerRoutes.USERS, UsersApi);
+serverapp.use(ServerRoutes.FRIENDS, FriendsApi);
 
 const server = serverapp.listen(port, (): void => {
   if (process.env.NODE_ENV !== "test")
