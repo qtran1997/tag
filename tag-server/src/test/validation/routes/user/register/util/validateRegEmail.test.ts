@@ -1,5 +1,5 @@
 import validateEmail, {
-  EmailErrorMessages,
+  EmailErrorMessages
 } from "tag-server/validation/routes/user/register/util/validateRegEmail";
 
 describe("validateEmail()", () => {
@@ -11,5 +11,5 @@ describe("validateEmail()", () => {
   });
   it("should not return an error message", () => {
     expect(validateEmail("TestEmail@gmail.com")).toEqual("");
-  })
+  });
 });

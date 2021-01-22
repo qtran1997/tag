@@ -7,36 +7,36 @@ const UserLinksSchema = new Schema(
   {
     user_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "users",
+      ref: "users"
     },
     portfolio: {
       type: String,
-      default: "",
+      default: ""
     },
     github: {
       type: String,
-      default: "",
+      default: ""
     },
     linkedin: {
       type: String,
-      default: "",
+      default: ""
     },
     instagram: {
       type: String,
-      default: "",
+      default: ""
     },
     twitter: {
       type: String,
-      default: "",
+      default: ""
     },
     facebook: {
       type: String,
-      default: "",
+      default: ""
     },
     youtube: {
       type: String,
-      default: "",
-    },
+      default: ""
+    }
     // TODO: Other links
   },
   { timestamps: true }

@@ -3,7 +3,7 @@ import Server from "tag-server/app";
 import {
   FriendStatus,
   ServerRoutes,
-  StatusCodes,
+  StatusCodes
 } from "tag-server/common/constants";
 import { FriendModel, UserModel } from "tag-server/common/types";
 import { randomString } from "tag-server/common/util";
@@ -16,7 +16,7 @@ describe("Friends Route", () => {
   const requesterUser = {
     email: "existing@email.com",
     username: "requesterUsername",
-    password: "123456",
+    password: "123456"
   };
 
   let recipientUsers: setUpFriendIds = {};
@@ -65,7 +65,7 @@ describe("Friends Route", () => {
 
     it("should return an error if the recipient user does not exist", async (done) => {
       const cannedRequestBody = {
-        id: "5ff5635efa3b9c89d494e7c4",
+        id: "5ff5635efa3b9c89d494e7c4"
       };
 
       const res = await loggedInServer
@@ -81,7 +81,7 @@ describe("Friends Route", () => {
 
     it("should return an error if the recipient user has already received a request from requester user", async (done) => {
       const cannedRequestBody = {
-        id: recipientUsers.requestedUserId,
+        id: recipientUsers.requestedUserId
       };
 
       const res = await loggedInServer
@@ -98,7 +98,7 @@ describe("Friends Route", () => {
 
     it("should return an error if the request is pending. no way this should occur", async (done) => {
       const cannedRequestBody = {
-        id: recipientUsers.pendingUserId,
+        id: recipientUsers.pendingUserId
       };
 
       const res = await loggedInServer
@@ -114,7 +114,7 @@ describe("Friends Route", () => {
 
     it("should return an error if the recipient user is already friends with requester user", async (done) => {
       const cannedRequestBody = {
-        id: recipientUsers.alreadyFriendsUserId,
+        id: recipientUsers.alreadyFriendsUserId
       };
 
       const res = await loggedInServer
@@ -131,7 +131,7 @@ describe("Friends Route", () => {
 
     it("should return an error if the recipient user does not exist", async (done) => {
       const cannedRequestBody = {
-        id: recipientUsers.requestedUserId,
+        id: recipientUsers.requestedUserId
       };
 
       const res = await loggedInServer
@@ -147,7 +147,7 @@ describe("Friends Route", () => {
 
     it("should return a success message even if the recipient user does not have a friend document", async (done) => {
       const cannedRequestBody = {
-        id: recipientUsers.noFriendDocUserId,
+        id: recipientUsers.noFriendDocUserId
       };
 
       const res = await loggedInServer
@@ -164,7 +164,7 @@ describe("Friends Route", () => {
 
     it("should return a success message even if the recipient user already has a friend document", async (done) => {
       const cannedRequestBody = {
-        id: recipientUsers.newFriendUserId,
+        id: recipientUsers.newFriendUserId
       };
 
       const res = await loggedInServer
@@ -194,7 +194,7 @@ describe("Friends Route", () => {
 
     it("should return an error if the user that sent the friend request does not exist", async (done) => {
       const cannedRequestBody = {
-        id: "5ff5635efa3b9c89d494e7c4",
+        id: "5ff5635efa3b9c89d494e7c4"
       };
 
       const res = await loggedInServer
@@ -210,7 +210,7 @@ describe("Friends Route", () => {
 
     it("should create a friend document for the user if it does not exist but return an error because there no existing friend request", async (done) => {
       const cannedRequestBody = {
-        id: recipientUsers.noFriendDocUserId,
+        id: recipientUsers.noFriendDocUserId
       };
 
       const res = await loggedInServer
@@ -226,7 +226,7 @@ describe("Friends Route", () => {
 
     it("should return an error if the request status is 'pending'. Can't accept a friend request that you requested", async (done) => {
       const cannedRequestBody = {
-        id: recipientUsers.pendingUserId,
+        id: recipientUsers.pendingUserId
       };
 
       const res = await loggedInServer
@@ -243,7 +243,7 @@ describe("Friends Route", () => {
 
     it("should return an error if the recipient user is already friends with requested user", async (done) => {
       const cannedRequestBody = {
-        id: recipientUsers.alreadyFriendsUserId,
+        id: recipientUsers.alreadyFriendsUserId
       };
 
       const res = await loggedInServer
@@ -260,7 +260,7 @@ describe("Friends Route", () => {
 
     it("should successfully add each of the users as friends", async (done) => {
       const cannedRequestBody = {
-        id: recipientUsers.requestedUserId,
+        id: recipientUsers.requestedUserId
       };
 
       const res = await loggedInServer
@@ -274,7 +274,7 @@ describe("Friends Route", () => {
 
       // Check if users were added to each other's friends list
       const requesterUserDoc = await User.findOne({
-        email: requesterUser.email,
+        email: requesterUser.email
       });
       const recipientUserDoc = await User.findById(cannedRequestBody.id);
 
@@ -303,7 +303,7 @@ describe("Friends Route", () => {
 
     it("should return an error if the users are not friends", async (done) => {
       const cannedRequestBody = {
-        id: recipientUsers.pendingUserId,
+        id: recipientUsers.pendingUserId
       };
 
       const res = await loggedInServer
@@ -318,7 +318,7 @@ describe("Friends Route", () => {
 
     it("should successfully remove each other from their friends lists", async (done) => {
       const cannedRequestBody = {
-        id: recipientUsers.alreadyFriendsUserId,
+        id: recipientUsers.alreadyFriendsUserId
       };
 
       const res = await loggedInServer
@@ -332,7 +332,7 @@ describe("Friends Route", () => {
 
       // Check if users were added to each other's friends list
       const requesterUserDoc = await User.findOne({
-        email: requesterUser.email,
+        email: requesterUser.email
       });
       const recipientUserDoc = await User.findById(cannedRequestBody.id);
 
@@ -360,7 +360,7 @@ describe("Friends Route", () => {
 
     it("should set decline the friend request both documents should revert to normal", async (done) => {
       const cannedRequestBody = {
-        id: recipientUsers.requestedUserId,
+        id: recipientUsers.requestedUserId
       };
 
       const res = await loggedInServer
@@ -374,7 +374,7 @@ describe("Friends Route", () => {
 
       // Check if users were added to each other's friends list
       const requesterUserDoc = await User.findOne({
-        email: requesterUser.email,
+        email: requesterUser.email
       });
       const recipientUserDoc = await User.findById(cannedRequestBody.id);
 
@@ -407,7 +407,7 @@ type setUpFriendsDBFunc = (requesterUser: {
 const setUpFriendsDB: setUpFriendsDBFunc = async (requesterUser) => {
   const newRequesterUser = new User({
     ...requesterUser,
-    password: await hashString(requesterUser.password),
+    password: await hashString(requesterUser.password)
   });
   const savedRequesterUser = await newRequesterUser.save();
 
@@ -434,7 +434,7 @@ const setUpFriendsDB: setUpFriendsDBFunc = async (requesterUser) => {
     requestedUserId,
     alreadyFriendsUserId,
     newFriendUserId,
-    noFriendDocUserId,
+    noFriendDocUserId
   };
 };
 
@@ -454,32 +454,32 @@ const createFriendDocument: createFriendDocumentFunc = async (
       const requesterFriendDoc = await new Friend({
         requester: requestUser._id,
         recipient: recipientUserId,
-        status: FriendStatus.ADD_FRIEND,
+        status: FriendStatus.ADD_FRIEND
       }).save();
     } else if (status === FriendStatus.REQUESTED) {
       const requesterFriendDoc = await new Friend({
         requester: requestUser._id,
         recipient: recipientUserId,
-        status: FriendStatus.PENDING,
+        status: FriendStatus.PENDING
       }).save();
     } else if (status === FriendStatus.PENDING) {
       const requesterFriendDoc = await new Friend({
         requester: requestUser._id,
         recipient: recipientUserId,
-        status: FriendStatus.REQUESTED,
+        status: FriendStatus.REQUESTED
       }).save();
     } else if (status === FriendStatus.FRIENDS) {
       const requesterFriendDoc = await new Friend({
         requester: requestUser._id,
         recipient: recipientUserId,
-        status: FriendStatus.FRIENDS,
+        status: FriendStatus.FRIENDS
       }).save();
     }
 
     const recipientFriendDoc = await new Friend({
       requester: recipientUserId,
       recipient: requestUser._id,
-      status,
+      status
     }).save();
 
     return recipientUserId;
@@ -501,7 +501,7 @@ const createUserDocument: createUserDocumentFunc = async () => {
     const recipientUser = await new User({
       email: randomEmail,
       username: randomUsername,
-      password: await hashString(randomPassword),
+      password: await hashString(randomPassword)
     }).save();
 
     return recipientUser._id;

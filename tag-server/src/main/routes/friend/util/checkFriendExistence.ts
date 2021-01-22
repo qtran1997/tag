@@ -13,13 +13,10 @@ type checkFriendExistenceFunc = (
  * @param {string} user2 The id of the second user
  * @returns {boolean} returns true if the user exists, otherwise false
  */
-const checkFriendExistence: checkFriendExistenceFunc = async (
-  user1,
-  user2
-) => {
+const checkFriendExistence: checkFriendExistenceFunc = async (user1, user2) => {
   const friendExists = await Friend.findOne({
     requester: user1,
-    recipient: user2,
+    recipient: user2
   });
 
   return friendExists;

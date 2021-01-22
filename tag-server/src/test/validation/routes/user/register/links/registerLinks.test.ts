@@ -10,7 +10,7 @@ describe("registerLinks", () => {
         linkedin: "linkedin.com",
         portfolio: "portfolio.com",
         twitter: "twitter.com",
-        youtube: "youtube.com",
+        youtube: "youtube.com"
       };
 
       const { errors, isValid } = validateUserLinksRegistration(

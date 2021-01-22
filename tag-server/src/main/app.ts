@@ -4,12 +4,13 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import passport from "passport";
 
-import ServerRoutes from 'tag-server/common/constants/ServerRoutes';
+import ServerRoutes from "tag-server/common/constants/ServerRoutes";
 import { dbKey } from "tag-server/config/keys";
-import mongooseOptions from 'tag-server/config/mongooseOptions';
+import mongooseOptions from "tag-server/config/mongooseOptions";
 import passportCheck from "tag-server/config/passport";
 
 import { FriendsApi, UsersApi } from "tag-server/routes";
+import cors from "cors";
 
 if (process.env.NODE_ENV !== "test") {
   const db = dbKey.mongoURI;
@@ -22,6 +23,10 @@ if (process.env.NODE_ENV !== "test") {
 }
 
 const serverapp: Express = express();
+
+if (process.env.NODE_ENV === "development") {
+  serverapp.use(cors());
+}
 
 // parses the request body to be a readable json format
 serverapp.use(bodyParser.urlencoded({ extended: false }));

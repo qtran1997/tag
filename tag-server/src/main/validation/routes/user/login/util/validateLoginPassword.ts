@@ -1,7 +1,7 @@
 import validator from "validator";
 
 export enum PasswordErrorMessages {
-  EMPTY = `Password field is required.`,
+  EMPTY = `Password field is required.`
 }
 
 type ValidatePasswordFunc = (password: string) => string;

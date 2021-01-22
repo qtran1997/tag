@@ -34,7 +34,7 @@ export type UsernameValidationFunc = (
 export const validateUsernameRegistration: UsernameValidationFunc = ({
   email,
   username,
-  password,
+  password
 }) => {
   const testEmail = !isEmpty(email) ? <string>email : "";
   const testUsername = !isEmpty(username) ? <string>username : "";
@@ -43,15 +43,15 @@ export const validateUsernameRegistration: UsernameValidationFunc = ({
   const errors: UsernameRegErrorMap = {
     email: validateEmail(testEmail),
     password: validatePassword(testPassword),
-    username: validateUsername(testUsername),
+    username: validateUsername(testUsername)
   };
 
   return {
     errors,
-    isValid: isValid(errors),
+    isValid: isValid(errors)
   };
 };
 
 export default {
-  validateUsernameRegistration,
+  validateUsernameRegistration
 };

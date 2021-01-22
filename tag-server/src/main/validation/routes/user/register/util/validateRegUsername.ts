@@ -2,7 +2,7 @@ import validator from "validator";
 
 export enum UsernameErrorMessages {
   LENGTH = `Username must be between 5 and 18 characters.`,
-  EMPTY = `Username field is required.`,
+  EMPTY = `Username field is required.`
 }
 
 type ValidateUsernameFunc = (username: string) => string;

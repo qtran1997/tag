@@ -31,22 +31,22 @@ export type LoginValidationFunc = (
  */
 export const validateLoginInput: LoginValidationFunc = ({
   username,
-  password,
+  password
 }) => {
   const testUsername = !isEmpty(username) ? <string>username : "";
   const testPassword = !isEmpty(password) ? <string>password : "";
 
   const errors: LoginErrorMap = {
     password: validatePassword(testPassword),
-    username: validateUsername(testUsername),
+    username: validateUsername(testUsername)
   };
 
   return {
     errors,
-    isValid: isValid(errors),
+    isValid: isValid(errors)
   };
 };
 
 export default {
-  validateLoginInput,
+  validateLoginInput
 };

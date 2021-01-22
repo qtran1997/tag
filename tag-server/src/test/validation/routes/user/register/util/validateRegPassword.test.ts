@@ -1,5 +1,5 @@
 import validatePassword, {
-  PasswordErrorMessages,
+  PasswordErrorMessages
 } from "tag-server/validation/routes/user/register/util/validateRegPassword";
 
 describe("validatePassword()", () => {
@@ -11,5 +11,5 @@ describe("validatePassword()", () => {
   });
   it("should not return an error message", () => {
     expect(validatePassword("Test Password")).toEqual("");
-  })
+  });
 });

@@ -1,9 +1,7 @@
 import { isEmpty } from "tag-server/common/util";
 import { isValid } from "tag-server/validation/util";
 import { ValidationReturnType } from "tag-server/common/types";
-import {
-  validateLink,
-} from "./util";
+import { validateLink } from "./util";
 
 export type UserLinksRegValidationProps = {
   facebook?: string;
@@ -52,7 +50,7 @@ export const validateUserLinksRegistration: UserLinksValidationFunc = ({
   linkedin,
   portfolio,
   twitter,
-  youtube,
+  youtube
 }) => {
   const testFacebookLink = !isEmpty(facebook) ? <string>facebook : "";
   const testGithubLink = !isEmpty(github) ? <string>github : "";
@@ -69,15 +67,15 @@ export const validateUserLinksRegistration: UserLinksValidationFunc = ({
     linkedin: validateLink(testLinkedinLink),
     portfolio: validateLink(testPortfolioLink),
     twitter: validateLink(testTwitterLink),
-    youtube: validateLink(testYoutubeLink),
+    youtube: validateLink(testYoutubeLink)
   };
 
   return {
     errors,
-    isValid: isValid(errors),
+    isValid: isValid(errors)
   };
 };
 
 export default {
-  validateUserLinksRegistration,
+  validateUserLinksRegistration
 };

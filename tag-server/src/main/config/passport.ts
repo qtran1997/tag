@@ -9,7 +9,7 @@ import { User } from "../models";
 
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: dbKey.secretOrKey,
+  secretOrKey: dbKey.secretOrKey
 };
 
 const passportCheck = (passport: PassportStatic) => {

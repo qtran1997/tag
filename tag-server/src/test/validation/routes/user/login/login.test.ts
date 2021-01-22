@@ -7,7 +7,7 @@ describe("UserLoginValidation()", () => {
     it("should return a map with no errors and isValid is true", () => {
       const usernameRegInput = {
         username: "testUsername",
-        password: "testPassword",
+        password: "testPassword"
       };
       const { errors, isValid } = validateLoginInput(usernameRegInput);
       expect(errors.username).toEqual("");
@@ -18,7 +18,7 @@ describe("UserLoginValidation()", () => {
     it("should return a map with 2 errors and isValid is false", () => {
       const usernameRegInput = {
         username: "",
-        password: "",
+        password: ""
       };
       const { errors, isValid } = validateLoginInput(usernameRegInput);
       expect(errors.username).not.toEqual("");

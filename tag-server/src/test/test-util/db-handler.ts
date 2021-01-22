@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
-import mongooseOptions from 'tag-server/config/mongooseOptions';
+import mongooseOptions from "tag-server/config/mongooseOptions";
 
 const mongod = new MongoMemoryServer();
 
@@ -37,5 +37,5 @@ const clearDatabase = async () => {
 export default {
   connect,
   closeDatabase,
-  clearDatabase,
+  clearDatabase
 };

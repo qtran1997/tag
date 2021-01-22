@@ -2,7 +2,7 @@ import validator from "validator";
 
 export enum PasswordErrorMessages {
   LENGTH = `Password must be at least 6 characters.`,
-  EMPTY = `Password field is required.`,
+  EMPTY = `Password field is required.`
 }
 
 type ValidatePasswordFunc = (password: string) => string;

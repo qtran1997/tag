@@ -2,7 +2,7 @@ import validator from "validator";
 
 export enum EmailErrorMessages {
   INVALID = `Email is invalid.`,
-  EMPTY = `Email field is required.`,
+  EMPTY = `Email field is required.`
 }
 
 type ValidateEmailFunc = (email: string) => string;

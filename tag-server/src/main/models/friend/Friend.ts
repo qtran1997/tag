@@ -16,7 +16,7 @@ const FriendsSchema = new Schema(
         FriendStatus.ADD_FRIEND,
         FriendStatus.REQUESTED,
         FriendStatus.FRIENDS,
-        FriendStatus.PENDING,
+        FriendStatus.PENDING
       ],
       default: FriendStatus.ADD_FRIEND
     }

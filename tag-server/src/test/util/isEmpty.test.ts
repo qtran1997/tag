@@ -14,13 +14,13 @@ describe("isEmpty()", () => {
     });
     it("should return false if input object has entries", () => {
       const inputObject1: object = {
-        testKey: "testValue",
+        testKey: "testValue"
       };
       expect(isEmpty(inputObject1)).toEqual(false);
 
       const inputObject2: object = {
         testKey: "testValue",
-        testKey2: "testValue2",
+        testKey2: "testValue2"
       };
       expect(isEmpty(inputObject2)).toEqual(false);
     });

@@ -44,7 +44,7 @@ router.post(
       if (!requesterUserFriendDoc) {
         requesterUserFriendDoc = await new Friend({
           requester: requesterUserId,
-          recipient: recipientUserId,
+          recipient: recipientUserId
         }).save();
       }
 
@@ -63,7 +63,7 @@ router.post(
       if (!recipientUserFriendDoc) {
         recipientUserFriendDoc = await new Friend({
           requester: recipientUserId,
-          recipient: requesterUserId,
+          recipient: requesterUserId
         }).save();
       }
 
@@ -101,7 +101,7 @@ router.post(
       await requesterUserFriendDoc.save();
 
       return res.json({
-        success: "You have sent a friend request to this user",
+        success: "You have sent a friend request to this user"
       });
     } catch (err) {
       return res.status(StatusCodes.OK).json({ err: err.message });
@@ -139,7 +139,7 @@ router.post(
       if (!requesterFriendDoc) {
         requesterFriendDoc = await new Friend({
           requester: requesterUserId,
-          recipient: recipientUserId,
+          recipient: recipientUserId
         }).save();
       }
 
@@ -150,7 +150,7 @@ router.post(
       if (!recipientFriendDoc) {
         recipientFriendDoc = await new Friend({
           requester: recipientUserId,
-          recipient: requesterUserId,
+          recipient: requesterUserId
         }).save();
       }
 
@@ -199,7 +199,7 @@ router.post(
         );
 
         return res.json({
-          success: "You have accepted this person's friend request",
+          success: "You have accepted this person's friend request"
         });
       } else if (
         recipientFriendDoc.status === FriendStatus.REQUESTED &&
@@ -248,7 +248,7 @@ router.post(
       if (!currentUserFriendDoc) {
         currentUserFriendDoc = await new Friend({
           requester: currentUserFriendDoc,
-          recipient: recipientUserId,
+          recipient: recipientUserId
         }).save();
       }
 
@@ -259,7 +259,7 @@ router.post(
       if (!recipientUserFriendDoc) {
         recipientUserFriendDoc = await new Friend({
           requester: recipientUserId,
-          recipient: currentUserFriendDoc,
+          recipient: currentUserFriendDoc
         }).save();
       }
 
@@ -296,7 +296,7 @@ router.post(
         );
 
         return res.json({
-          success: "You have removed this person from your friend's list",
+          success: "You have removed this person from your friend's list"
         });
       }
     } catch (err) {
@@ -342,7 +342,7 @@ router.post(
       );
 
       return res.json({
-        success: "You have denied this person's friend request",
+        success: "You have denied this person's friend request"
       });
     } catch (err) {
       return res.status(StatusCodes.OK).json({ err: "An error has occurred" });

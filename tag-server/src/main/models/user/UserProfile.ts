@@ -3,8 +3,12 @@ import { UserModel } from "tag-server/common/types";
 
 const Schema = mongoose.Schema;
 
-const UserSchema = new Schema(
+const UserProfileSchema = new Schema(
   {
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users"
+    },
     email: {
       type: String,
       required: true
@@ -16,15 +20,11 @@ const UserSchema = new Schema(
     password: {
       type: String,
       required: true
-    },
-    userLinks: {
-      type: mongoose.Schema.Types.ObjectId
-    },
-    friends: [{ type: Schema.Types.ObjectId, ref: "friends" }]
+    }
   },
   { timestamps: true }
 );
 
-const User = mongoose.model<UserModel>("users", UserSchema);
+const User = mongoose.model<UserModel>("userprofiles", UserProfileSchema);
 
 export default User;

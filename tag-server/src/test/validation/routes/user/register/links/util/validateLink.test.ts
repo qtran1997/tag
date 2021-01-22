@@ -3,5 +3,5 @@ import validateLink from "tag-server/validation/routes/user/register/links/util/
 describe("validateLink()", () => {
   it("should return an empty string... for now", () => {
     expect(validateLink("")).toEqual("");
-  })
-})
+  });
+});

@@ -1,5 +1,5 @@
 import validateUsername, {
-  UsernameErrorMessages,
+  UsernameErrorMessages
 } from "tag-server/validation/routes/user/register/util/validateRegUsername";
 
 describe("validateUsername()", () => {
@@ -11,5 +11,5 @@ describe("validateUsername()", () => {
   });
   it("should not return an error message", () => {
     expect(validateUsername("Test Username")).toEqual("");
-  })
+  });
 });

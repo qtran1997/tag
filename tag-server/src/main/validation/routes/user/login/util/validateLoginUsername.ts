@@ -1,7 +1,7 @@
 import validator from "validator";
 
 export enum UsernameErrorMessages {
-  EMPTY = `Username field is required.`,
+  EMPTY = `Username field is required.`
 }
 
 type ValidateUsernameFunc = (username: string) => string;

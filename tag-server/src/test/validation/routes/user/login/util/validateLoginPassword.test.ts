@@ -1,5 +1,5 @@
 import validatePassword, {
-  PasswordErrorMessages,
+  PasswordErrorMessages
 } from "tag-server/validation/routes/user/login/util/validateLoginPassword";
 
 describe("validatePassword()", () => {

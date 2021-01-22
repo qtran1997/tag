@@ -23,7 +23,7 @@ const router: Router = express.Router();
  */
 router.get(UserRoutes.TEST, (_req, res) =>
   res.json({
-    msg: "Users API Works",
+    msg: "Users API Works"
   })
 );
 
@@ -48,7 +48,7 @@ router.post(UserRoutes.REGISTER, async (req, res) => {
 
   try {
     const user = await User.findOne({
-      $or: [{ email: email }, { username: username }],
+      $or: [{ email: email }, { username: username }]
     });
 
     if (user) {
@@ -64,7 +64,7 @@ router.post(UserRoutes.REGISTER, async (req, res) => {
       const newUser = new User({
         email: email.trim(),
         username: username.trim(),
-        password: encryptedPassword,
+        password: encryptedPassword
       });
 
       const savedUser = await newUser.save();
@@ -107,7 +107,7 @@ router.post(
       linkedin,
       portfolio,
       twitter,
-      youtube,
+      youtube
     } = req.body;
 
     const user = <UserModel>req.user;
@@ -126,7 +126,7 @@ router.post(
             linkedin: linkedin ? linkedin.trim() : userLinks.linkedin,
             portfolio: portfolio ? portfolio.trim() : userLinks.portfolio,
             twitter: twitter ? twitter.trim() : userLinks.twitter,
-            youtube: youtube ? youtube.trim() : userLinks.youtube,
+            youtube: youtube ? youtube.trim() : userLinks.youtube
           });
 
           savedUserLinks = userLinks;
@@ -139,7 +139,7 @@ router.post(
             linkedin: linkedin && linkedin.trim(),
             portfolio: portfolio && portfolio.trim(),
             twitter: twitter && twitter.trim(),
-            youtube: youtube && youtube.trim(),
+            youtube: youtube && youtube.trim()
           });
 
           savedUserLinks = await newUserLinks.save();
@@ -148,7 +148,7 @@ router.post(
         // Add the user link document to the user
         const userToSave = await User.findById(user._id);
         if (!userToSave) throw new Error();
-        
+
         userToSave.userLinks = savedUserLinks._id;
         await userToSave.save();
 
@@ -157,9 +157,9 @@ router.post(
 
       throw new Error();
     } catch (err) {
-      return res
-        .status(StatusCodes.OK)
-        .json({ err: "Problem registering user links.. please try again." });
+      return res.status(StatusCodes.OK).json({
+        err: "Problem registering user links.. please try again."
+      });
     }
   }
 );
@@ -198,7 +198,7 @@ router.post(UserRoutes.LOGIN, (req, res) => {
           const payload = {
             id: user.id,
             email: user.email,
-            username: user.username,
+            username: user.username
             // fname: user.fname, // TODO: Link the first name, last name, and avatar
             // lname: user.lname,
             // avatar: user.avatar,
@@ -212,7 +212,7 @@ router.post(UserRoutes.LOGIN, (req, res) => {
             (_err, token) => {
               res.json({
                 success: true,
-                token,
+                token: `Bearer ${token}`
               });
             }
           );

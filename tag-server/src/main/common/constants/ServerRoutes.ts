@@ -1,6 +1,6 @@
 enum ServerRoutes {
   FRIENDS = "/api/friends",
-  USERS = "/api/users",
+  USERS = "/api/users"
 }
 
 export default ServerRoutes;

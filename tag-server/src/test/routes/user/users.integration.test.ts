@@ -10,17 +10,17 @@ describe("Users Route", () => {
   const existingUser = {
     email: "existing@email.com",
     username: "testUsername",
-    password: "123456",
+    password: "123456"
   };
 
   const user2 = {
     email: "user2@email.com",
     username: "username2",
-    password: "123456",
+    password: "123456"
   };
 
   const existingUserLinks = {
-    facebook: "existingfacebook.com",
+    facebook: "existingfacebook.com"
   };
 
   beforeAll(async () => {
@@ -29,11 +29,11 @@ describe("Users Route", () => {
     // Add a mock user to the database
     const newUser = new User({
       ...existingUser,
-      password: await hashString(existingUser.password),
+      password: await hashString(existingUser.password)
     });
     const newUser2 = new User({
       ...user2,
-      password: await hashString(existingUser.password),
+      password: await hashString(existingUser.password)
     });
 
     const savedUser = await newUser.save();
@@ -41,7 +41,7 @@ describe("Users Route", () => {
 
     const newUserLinks = new UserLinks({
       ...existingUserLinks,
-      user_id: savedUser._id,
+      user_id: savedUser._id
     });
 
     const savedUserLink = await newUserLinks.save();
@@ -78,7 +78,7 @@ describe("Users Route", () => {
       const cannedRequestBody = {
         email: existingUser.email,
         username: "unusedUsername",
-        password: existingUser.password,
+        password: existingUser.password
       };
 
       const res = await request(Server)
@@ -86,7 +86,7 @@ describe("Users Route", () => {
         .send(cannedRequestBody);
 
       const registeredUserByEmail = await User.findOne({
-        email: cannedRequestBody.email,
+        email: cannedRequestBody.email
       });
 
       expect(registeredUserByEmail).not.toBeNull();
@@ -101,7 +101,7 @@ describe("Users Route", () => {
       const cannedRequestBody = {
         email: "unusedEmail@email.com",
         username: existingUser.username,
-        password: existingUser.password,
+        password: existingUser.password
       };
 
       const res = await request(Server)
@@ -118,7 +118,7 @@ describe("Users Route", () => {
       const cannedRequestBody = {
         email: "new@email.com",
         username: "newUsername",
-        password: existingUser.password,
+        password: existingUser.password
       };
 
       const res = await request(Server)
@@ -130,10 +130,10 @@ describe("Users Route", () => {
       expect(res.body.email).toEqual(cannedRequestBody.email);
 
       const registeredUserByEmail = await User.findOne({
-        email: cannedRequestBody.email,
+        email: cannedRequestBody.email
       });
       const registeredUserByUsername = await User.findOne({
-        username: cannedRequestBody.username,
+        username: cannedRequestBody.username
       });
 
       expect(registeredUserByEmail).not.toBeNull();
@@ -158,7 +158,7 @@ describe("Users Route", () => {
 
     it("should return a new UserLink if the the user links have not been registered yet", async (done) => {
       const cannedRequestBody = {
-        facebook: "facebook.com/test",
+        facebook: "facebook.com/test"
       };
 
       const loggedInServer = request.agent(Server);
@@ -178,7 +178,7 @@ describe("Users Route", () => {
       expect(res.body.facebook).toEqual(cannedRequestBody.facebook);
 
       const registeredUserByEmail = await User.findOne({
-        email: user2.email,
+        email: user2.email
       });
 
       const userId = registeredUserByEmail?._id;
@@ -193,16 +193,18 @@ describe("Users Route", () => {
 
     it("should return a success message when successfully updating an existing user link", async (done) => {
       const cannedRequestBody = {
-        facebook: "facebook.com/test",
+        facebook: "facebook.com/test"
       };
 
       let registeredUserByEmail = await User.findOne({
-        email: existingUser.email,
+        email: existingUser.email
       });
 
       const userId = registeredUserByEmail?._id;
 
-      const userLinksInitial = await UserLinks.findOne({ user_id: userId });
+      const userLinksInitial = await UserLinks.findOne({
+        user_id: userId
+      });
 
       expect(userLinksInitial).not.toBeNull();
 
@@ -223,7 +225,7 @@ describe("Users Route", () => {
       const userLinksAfter = await UserLinks.findOne({ user_id: userId });
 
       registeredUserByEmail = await User.findOne({
-        email: existingUser.email,
+        email: existingUser.email
       });
 
       expect(userLinksAfter).not.toBeNull();
@@ -246,7 +248,7 @@ describe("Users Route", () => {
     it("should return an error message if the user is not found", async (done) => {
       const cannedRequestBody = {
         username: "wrongUsername",
-        password: existingUser.password,
+        password: existingUser.password
       };
 
       const res = await request(Server)
@@ -262,7 +264,7 @@ describe("Users Route", () => {
     it("should return an error message if the password is incorrect", async (done) => {
       const cannedRequestBody = {
         username: existingUser.username,
-        password: "wrongpassword",
+        password: "wrongpassword"
       };
 
       const res = await request(Server)
@@ -278,7 +280,7 @@ describe("Users Route", () => {
     it("should return a success message and information about the user if all inputs are correct", async (done) => {
       const cannedRequestBody = {
         username: existingUser.username,
-        password: existingUser.password,
+        password: existingUser.password
       };
 
       const res = await request(Server)
