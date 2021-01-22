@@ -6,13 +6,13 @@ import { NavMenu } from "./navmenu";
 
 const useStyles = makeStyles({
   background: {
-    backgroundColor: "red",
-  },
+    backgroundColor: "red"
+  }
 });
 
 const Navbar: React.FC = () => {
   const classes = useStyles();
-  
+
   return (
     <Toolbar className={classes.background}>
       <Grid container justify="space-between">
